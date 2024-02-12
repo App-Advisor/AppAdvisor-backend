@@ -64,4 +64,4 @@ let outils ={
     deleteManyOutils
 }
 
-module.exports = outils
+module.exports = outils;

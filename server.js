@@ -15,15 +15,11 @@ app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-app.use(express.json());
+app.use(express.json()); 
 
-/**
- * * Routes
- */
-app.use("/user", userRoutes);
-app.use("/outils", outilsRouter);
+app.use("/user" , userRouter);
+app.use("/outils" , outilsRouter); 
+app.use("/avis" , avisRouter); 
+app.use("/categories" , categoriesRouter);
 
-/**
- * * Exports
- */
-module.exports = app;
+module.exports = app ; 
