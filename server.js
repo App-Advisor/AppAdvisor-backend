@@ -2,8 +2,10 @@ const express = require('express');
 const connectDatabase = require('./db/connect'); // Chemin vers le fichier connect.js
 const app = express();
 const port = 3000;
-const userRoutes = require("./Routers/userRouter");
+const userRouter = require("./Routers/userRouter");
 const outilsRouter = require("./Routers/outilsRouter");
+const avisRouter = require("./Routers/avisRouter");
+const categoriesRouter = require("./Routers/categoriesRouter");
 
 connectDatabase() ; 
 
