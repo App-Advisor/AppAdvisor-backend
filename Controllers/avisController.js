@@ -64,4 +64,4 @@ let Avis ={
     deleteManyAvis
 }
 
-module.exports = Avis
+module.exports = Avis;

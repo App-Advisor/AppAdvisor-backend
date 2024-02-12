@@ -11,10 +11,11 @@ app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-app.use(express.json()) ; 
+app.use(express.json()); 
 
-app.use("/user" , userRouter) ;
-app.use("/outils" , outilsRouter) ; 
-app.use("/avis" , avisRouter) ; 
-app.use("/categories" , categoriesRouter)
+app.use("/user" , userRouter);
+app.use("/outils" , outilsRouter); 
+app.use("/avis" , avisRouter); 
+app.use("/categories" , categoriesRouter);
+
 module.exports = app ; 

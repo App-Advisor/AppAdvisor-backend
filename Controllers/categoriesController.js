@@ -64,4 +64,4 @@ let Categories ={
     deleteManyCategories
 }
 
-module.exports = Categories
+module.exports = Categories;
