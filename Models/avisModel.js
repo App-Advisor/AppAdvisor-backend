@@ -6,5 +6,5 @@ const avisSchema = new mongoose.Schema({
 
   });
   
-  const avisModel = mongoose.model("outil", avisSchema);
+  const avisModel = mongoose.model("avis", avisSchema);
   module.exports = avisModel;

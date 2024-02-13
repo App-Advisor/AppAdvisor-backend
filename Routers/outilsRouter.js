@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const outils = require("../Controllers/outilsController");
-// const Middleware = require("../middleware/test");
 
 router.get("/" , outils.getManyOutils);
 router.get("/:id" , outils.getByIdOutils) ; 

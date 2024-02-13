@@ -5,10 +5,8 @@ const outilSchema = new mongoose.Schema({
   id : {type : number , required : [true , "id is required "]} , 
 
   categories: { type: String, required: [true, "tel is required"] },
-  // Champ pour l'URL de l'image
-  imageURL: {    type: String,    required: true  },
-  // Champ pour l'ID public de l'image (optionnel, dépend de vos besoins)
-  imagePublicId: {    type: String  }
+  imageURL: { type: String, required: true },
+  imagePublicId: { type: String }
   
 });
 

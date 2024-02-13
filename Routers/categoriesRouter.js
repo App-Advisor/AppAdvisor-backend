@@ -1,5 +1,5 @@
 const express = require("express")
-const router = expressRouter() ;
+const router = express.Router() ;
 const categories = require ("../Controllers/categoriesController")
 
 router.get("/" , categories.getManyCategories) ; 
@@ -9,5 +9,6 @@ router.post("/" , categories.postCategories)
 router.put("/" , categories.putManyCategories) ; 
 router.put("/:id" , categories.putCategoriesById) ; 
 router.delete("/" , categories.deleteManyCategories) ; 
-router.delete("/:id" , categories.deleteByIdCategories)
+router.delete("/:id" , categories.deleteByIdCategories);
+
 module.exports = router ; 

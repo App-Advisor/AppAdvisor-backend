@@ -31,9 +31,9 @@ const postUser = (request , response) => {
 }
 
 const putManyUser = async (request , response) =>{
-const { ids, input } = request.body;
-const result = await userModel.updateMany({ _id: { $in: ids } }, input);
-response.send(result);
+    const { ids, input } = request.body;
+    const result = await userModel.updateMany({ _id: { $in: ids } }, input);
+    response.send(result);
 };
 
 const putUserById = async (request , response )=> {
@@ -41,20 +41,17 @@ const putUserById = async (request , response )=> {
     let result = await userModel.findByIdAndUpdate (request.params.id , input , {new : true}) ; 
     response.send(result )
 }
+
 const deleteManyuser = async(request,response)=>{
     const input = request.body
     let result= await userModel.deleteMany(input)
     response.send(result)
 }
+
 const deleteByIduser=async(request,response)=>{
     let result=await userModel.findByIdAndDelete(request.params.id)
     response.send(result)
-}
-const me = async (request, response) => {
-    let user = request.user
-    response.send(user)
-       }
-    
+}   
 
 const signup = async (request, response) => {
     let input = request.body;
@@ -67,34 +64,30 @@ const signup = async (request, response) => {
     let newUser = new userModel(input);
     let result = await userModel.create(newUser);
     return response.status(201).json(result);
-  };
+};
 
-
-  
-
-  const signin = async (request, response) => {
-
+const signin = async (request, response) => {
     let input = request.body;
     let userExist = await userModel.findOne({ email: input.email });
     if (!userExist) {
         return response.status(404).json({ msg: "user not found !" });
     }
-    let validPass =await bcrypt.compare(input.password, userExist.password)
-     if(!validPass)
-     {
-         return response.status(400).json({msg:"inncorrect password!"});
-     }
-            let token = jwt.sign({ userId: userExist._id }, "TOKEN-CRYPTER", {
-              expiresIn: "24h",
-            });
-            response.cookie("token", token);
-            return response.status(200).json({
-              user: userExist,
-              token,
-            });
-        }
+    let validPass =await bcrypt.compare(input.password, userExist.password);
+    if(!validPass)
+    {
+        return response.status(400).json({msg:"inncorrect password!"});
+    }
+    let token = jwt.sign({ userId: userExist._id }, "TOKEN-CRYPTER", {
+        expiresIn: "24h",
+    });
+    response.cookie("token", token);
+    return response.status(200).json({
+        user: userExist,
+        token,
+    });
+}
        
-   async function me(request, response) {
+async function me(request, response) {
     let user = request.user
     response.send(user)
 }
@@ -112,6 +105,6 @@ const user = {
     signup, 
     me
 
-   } ;
+};
 
-module.exports = user 
+module.exports = user; 
