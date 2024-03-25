@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 const Categorie = require("./Categorie");
+const Avis = require("./Avis");
 
 const outilSchema = new mongoose.Schema({
-  name : { type: String, required: [true, "name is required"] }, 
-  categories: { type: String, required: [true, "tel is required"] },
+  name : { type: String, required: [true, "name is required"] },
+  description: { type: String, required: [true, "description is required"] },
   imageURL: { type: String, required: true },
+  avis: { type: mongoose.Schema.Types.ObjectId, ref: "Avis" },
   categories : {type : mongoose.Schema.Types.ObjectId , ref : "Categorie"}
 }, { versionKey: false });
 
