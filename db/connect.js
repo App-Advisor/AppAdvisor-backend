@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const connectDatabase = () => {
   mongoose
-    .connect("mongodb://localhost:27017/Appadvisor", {
+    .connect("mongodb+srv://raparisonbryan:fV6p0BJ4rPrIx1Jv@appadvisor.uohjdvt.mongodb.net/appadvisor?retryWrites=true&w=majority&appName=Appadvisor", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
