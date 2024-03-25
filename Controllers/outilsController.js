@@ -1,5 +1,5 @@
 const {request , response } = require ("express")
-const outilsModel = require("../Models/outils")
+const outilsModel = require("../Models/Outil")
 
 const getManyOutils= async(request , response) =>{
     let result = await outilsModel.find()

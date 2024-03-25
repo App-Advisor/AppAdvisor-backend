@@ -1,5 +1,5 @@
 const {request , response } = require ("express")
-const avisModel = require("../Models/avisModel")
+const avisModel = require("../Models/Avis")
 
 const getManyAvis= async(request , response) =>{
     let result = await avisModel.find()

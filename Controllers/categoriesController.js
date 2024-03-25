@@ -1,5 +1,5 @@
 const {request , response } = require ("express")
-const categoriesModel = require("../Models/categoriesModel")
+const categoriesModel = require("../Models/Categorie")
 
 const getManyCategories= async(request , response) =>{
     let result = await categoriesModel.find()
