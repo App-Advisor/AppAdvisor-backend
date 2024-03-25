@@ -1,5 +1,5 @@
 const express = require('express');
-const connectDatabase = require('./db/connect'); // Chemin vers le fichier connect.js
+const connectDatabase = require('./db/connect'); 
 const app = express();
 const port = 3000;
 const userRouter = require("./Routers/userRouter");

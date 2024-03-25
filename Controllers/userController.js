@@ -1,98 +1,110 @@
-const {request , response} = require ("express")
-const userModel = require ("../Models/UserModel") 
-const jwt = require("jsonwebtoken")
+const { request, response } = require("express");
+const userModel = require("../Models/UserModel");
+const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 
-const getManyuser = async(request , response) => {
-    let result = await userModel.find() 
-    console.log(result)
-    response.send(result)
+const getManyuser = async (request, response) => {
+    const result = await userModel.find();
+    console.log(result);
+    response.send(result);
 }
 
-const getByIduser = async(request , response) =>{
-    let result = await userModel.findById(request.params.id)
-    response.send(result) ;
+const getByIduser = async (request, response) => {
+    try {
+      const result = await userModel.findById(request.params.id);
+      if (!result) {
+        return response.status(404).send('User not found');
+      }
+      response.send(result);
+    } catch (error) {
+      console.error(error);
+      response.status(500).send('An error occurred');
+    }
+};
+  
+
+const getBymailUser = async (request, response) => {
+    const result = await userModel.findOne({ email: request.params.email });
+    response.send(result);
 }
 
-const getBymailUser = async (request , response) => {
-    const result = await userModel.findOne({ email : request.params.email}) ; 
-    response.send(result) ; 
+const postUser = async (request, response) => {
+    try {
+        const input = request.body;
+        const user = new userModel(input);
+        const savedUser = await user.save();
+        response.status(201).send(savedUser);
+    } catch (error) {
+        response.status(500).json({ error: error.message });
+    }
 }
 
-const postUser = (request , response) => {
-    const input = request.body ; 
-    const user = new userModel(input) ; 
-    user.save ((error , savedUser) => {
-        if (error) {
-            return response.status(500).json({error : error.message});
-        }
-        response.status(201).send(savedUser)
-    });
-}
-
-const putManyUser = async (request , response) =>{
+const putManyUser = async (request, response) => {
     const { ids, input } = request.body;
     const result = await userModel.updateMany({ _id: { $in: ids } }, input);
     response.send(result);
 };
 
-const putUserById = async (request , response )=> {
-    input = request.body 
-    let result = await userModel.findByIdAndUpdate (request.params.id , input , {new : true}) ; 
-    response.send(result )
+const putUserById = async (request, response) => {
+    const input = request.body;
+    const result = await userModel.findByIdAndUpdate(request.params.id, input, { new: true });
+    response.send(result);
 }
 
-const deleteManyuser = async(request,response)=>{
-    const input = request.body
-    let result= await userModel.deleteMany(input)
-    response.send(result)
+const deleteManyuser = async (request, response) => {
+    const input = request.body;
+    const result = await userModel.deleteMany(input);
+    response.send(result);
 }
 
-const deleteByIduser=async(request,response)=>{
-    let result=await userModel.findByIdAndDelete(request.params.id)
-    response.send(result)
-}   
+const deleteByIduser = async (request, response) => {
+    const result = await userModel.findByIdAndDelete(request.params.id);
+    response.send(result);
+}
 
 const signup = async (request, response) => {
     let input = request.body;
-    let userExist = await userModel.findOne({ email: input.email });
+    const userExist = await userModel.findOne({ email: input.email });
     if (userExist) {
-      return response.status(400).json({ msg: "email already used !" });
+        return response.status(400).json({ msg: "Email already used!" });
     }
-    let hashedPassword = await bcrypt.hash(input.password, 10);
+    const hashedPassword = await bcrypt.hash(input.password, 10);
     input.password = hashedPassword;
-    let newUser = new userModel(input);
-    let result = await userModel.create(newUser);
-    return response.status(201).json(result);
+    try {
+        const newUser = new userModel(input);
+        const result = await newUser.save();
+        return response.status(201).json(result);
+    } catch (error) {
+        return response.status(500).json({ error: error.message });
+    }
 };
 
 const signin = async (request, response) => {
     let input = request.body;
     let userExist = await userModel.findOne({ email: input.email });
     if (!userExist) {
-        return response.status(404).json({ msg: "user not found !" });
+        return response.status(404).json({ msg: "User not found!" });
     }
-    let validPass =await bcrypt.compare(input.password, userExist.password);
-    if(!validPass)
-    {
-        return response.status(400).json({msg:"inncorrect password!"});
+    const validPass = await bcrypt.compare(input.password, userExist.password);
+    if (!validPass) {
+        return response.status(400).json({ msg: "Incorrect password!" });
     }
-    let token = jwt.sign({ userId: userExist._id }, "TOKEN-CRYPTER", {
+    const token = jwt.sign({ userId: userExist._id }, "TOKEN-CRYPTER", {
         expiresIn: "24h",
     });
-    response.cookie("token", token);
+    response.cookie("token", token, { httpOnly: true }); 
     return response.status(200).json({
         user: userExist,
         token,
     });
 }
-       
+
 async function me(request, response) {
-    let user = request.user
-    response.send(user)
+    const user = request.user;
+    response.send(user);
 }
 
-const user = {
+const userController = {
     getManyuser,
     getByIduser,
     postUser,
@@ -101,10 +113,9 @@ const user = {
     deleteManyuser,
     deleteByIduser,
     getBymailUser,
-    signin, 
-    signup, 
+    signin,
+    signup,
     me
-
 };
 
-module.exports = user; 
+module.exports = userController;

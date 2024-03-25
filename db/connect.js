@@ -13,6 +13,7 @@ const connectDatabase = () => {
     })
     .catch((err) => {
       console.log("Connection Error => ", err.message);
+      process.exit(1);
     });
 };
 
