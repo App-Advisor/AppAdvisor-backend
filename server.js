@@ -7,6 +7,8 @@ const outilsRouter = require("./Routers/outilsRouter");
 const avisRouter = require("./Routers/avisRouter");
 const categoriesRouter = require("./Routers/categoriesRouter");
 const cors = require('cors');
+const swaggerDocs = require('./swagger');
+const swaggerUI = require('swagger-ui-express');
 
 connectDatabase() ; 
 
@@ -26,5 +28,6 @@ app.use("/user" , userRouter);
 app.use("/outils" , outilsRouter); 
 app.use("/avis" , avisRouter); 
 app.use("/categories" , categoriesRouter);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 module.exports = app ; 

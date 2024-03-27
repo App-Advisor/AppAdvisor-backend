@@ -32,21 +32,9 @@ const postCategories = async (request, response) => {
     }
 }
 
-const putManyCategories = async (request, response) => {
-    const { ids, input } = request.body;
-    const result = await categoriesModel.updateMany({ _id: { $in: ids } }, input);
-    response.send(result);
-}
-
 const putCategoriesById = async (request, response) => {
     const input = request.body;
     const result = await categoriesModel.findByIdAndUpdate(request.params.id, input, { new: true });
-    response.send(result);
-}
-
-const deleteManyCategories = async (request, response) => {
-    const input = request.body;
-    const result = await categoriesModel.deleteMany(input);
     response.send(result);
 }
 
@@ -59,9 +47,7 @@ let categories = {
     getManyCategories,
     getByIdCategories,
     postCategories,
-    putManyCategories,
     putCategoriesById,
-    deleteManyCategories,
     deleteByIdCategories
 };
 

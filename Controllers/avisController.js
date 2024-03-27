@@ -58,12 +58,6 @@ const postAvis = async (req, res) => {
     }
 };
 
-const putManyAvis = async (request, response) => {
-    const { ids, input } = request.body;
-    const result = await avisModel.updateMany({ _id: { $in: ids } }, input);
-    response.send(result);
-}
-
 const putAvisById = async (request, response) => {
     const input = request.body;
     const result = await avisModel.findByIdAndUpdate(request.params.id, input, { new: true });
@@ -85,7 +79,6 @@ let avis = {
     getManyAvis,
     getByIdAvis,
     postAvis,
-    putManyAvis,
     putAvisById,
     deleteManyAvis,
     deleteByIdAvis,
