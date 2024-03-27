@@ -1,8 +1,12 @@
+require("dotenv").config();
+const userName = encodeURIComponent(process.env.JWT_USER);
+const password = encodeURIComponent(process.env.JWT_PWD);
+
 const mongoose = require("mongoose");
 
 const connectDatabase = () => {
   mongoose
-    .connect("mongodb+srv://raparisonbryan:fV6p0BJ4rPrIx1Jv@appadvisor.uohjdvt.mongodb.net/appadvisor?retryWrites=true&w=majority&appName=Appadvisor", {
+    .connect(`mongodb+srv://${userName}:${password}@appadvisor.uohjdvt.mongodb.net/appadvisor?retryWrites=true&w=majority&appName=Appadvisor`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

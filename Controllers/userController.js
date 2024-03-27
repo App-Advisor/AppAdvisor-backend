@@ -2,11 +2,16 @@ const { request, response } = require("express");
 const userModel = require("../Models/UserModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+const secret = process.env.JWT_SECRET;
 
 const getManyuser = async (request, response) => {
-    const result = await userModel.find();
-    console.log(result);
-    response.send(result);
+    try {
+        const result = await userModel.find();
+        response.send(result);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ error: error.message });
+    }
 }
 
 const getByIduser = async (request, response) => {
@@ -66,7 +71,7 @@ const signup = async (request, response) => {
     let input = request.body;
     const userExist = await userModel.findOne({ email: input.email });
     if (userExist) {
-        return response.status(400).json({ msg: "Email already used!" });
+        return response.status(400).json({ msg: "Adresse mail déhà utilisée" });
     }
     const hashedPassword = await bcrypt.hash(input.password, 10);
     input.password = hashedPassword;
@@ -83,16 +88,19 @@ const signin = async (request, response) => {
     let input = request.body;
     let userExist = await userModel.findOne({ email: input.email });
     if (!userExist) {
-        return response.status(404).json({ msg: "User not found!" });
+        return response.status(404).json({ msg: "Utilisateur introuvable" });
     }
     const validPass = await bcrypt.compare(input.password, userExist.password);
     if (!validPass) {
-        return response.status(400).json({ msg: "Incorrect password!" });
+        return response.status(400).json({ msg: "Mot de passe incorrect" });
     }
-    const token = jwt.sign({ userId: userExist._id }, "TOKEN-CRYPTER", {
+    const token = jwt.sign({ userId: userExist._id }, secret, {
         expiresIn: "24h",
     });
-    response.cookie("token", token, { httpOnly: true }); 
+    response.cookie("token", token, { 
+        httpOnly: true,
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+     }); 
     return response.status(200).json({
         user: userExist,
         token,

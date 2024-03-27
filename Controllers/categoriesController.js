@@ -1,15 +1,24 @@
 const categoriesModel = require("../Models/Categorie");
 
 const getManyCategories = async (request, response) => {
-    const result = await categoriesModel.find();
-    console.log(result);
-    response.send(result);
+    try {
+        const result = await categoriesModel.find().populate('outils', 'name');
+        response.send(result);
+    } catch (error) {
+        console.log(error);
+        response.status(500).json({ error: error.message });
+    }
 }
 
-const getByIdCategories = async (request, response) => {
-    const result = await categoriesModel.findById(request.params.id);
-    console.log(result);
-    response.send(result);
+const getByIdCategories = async (request, response) => {  
+    try {
+        const result = await categoriesModel.findById(request.params.id).populate('outils', 'name');
+        console.log(result);
+        response.send(result);
+    } catch (error) {
+        console.log(error);
+        response.status(500).json({ error: error.message });
+    }
 }
 
 const postCategories = async (request, response) => {

@@ -2,15 +2,23 @@ const { request, response } = require("express");
 const outilsModel = require("../Models/Outil");
 
 const getManyOutils = async (request, response) => {
-    const result = await outilsModel.find();
-    console.log(result);
-    response.send(result);
+    try {
+        const result = await outilsModel.find().populate('categories', 'name').populate('avis', 'difficulte performance flexibilite');
+        response.send(result);
+    } catch (error) {
+        console.log(error);
+        response.status(500).json({ error: error.message });
+    }
 }
 
 const getByIdOutils = async (request, response) => {
-    const result = await outilsModel.findById(request.params.id);
-    console.log(result);
-    response.send(result);
+    try {
+        const result = await outilsModel.findById(request.params.id).populate('categories', 'name').populate('avis', 'difficulte performance flexibilite');
+        response.send(result);
+    } catch (error) {
+        console.log(error);
+        response.status(500).json({ error: error.message });
+    }
 }
 
 const postOutils = async (request, response) => {

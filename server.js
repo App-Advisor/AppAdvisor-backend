@@ -6,8 +6,11 @@ const userRouter = require("./Routers/userRouter");
 const outilsRouter = require("./Routers/outilsRouter");
 const avisRouter = require("./Routers/avisRouter");
 const categoriesRouter = require("./Routers/categoriesRouter");
+const cors = require('cors');
 
 connectDatabase() ; 
+
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Hello, Node.js!');

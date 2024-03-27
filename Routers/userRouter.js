@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const user = require("../Controllers/userController");
+const verifySignUp = require("../middleware/verifySignUp");
 
 router.get("/", user.getManyuser);
 router.get("/:id", user.getByIduser);
@@ -10,7 +11,7 @@ router.put("/", user.putManyUser);
 router.put("/:id", user.putUserById);
 router.delete("/", user.deleteManyuser);
 router.delete("/:id", user.deleteByIduser);
-router.post("/signup", user.signup);
+router.post("/signup", verifySignUp.checkDuplicateUsernameOrEmail, user.signup);
 router.post("/signin", user.signin);
 router.post("/me", user.me);
 

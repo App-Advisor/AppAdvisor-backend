@@ -1,25 +1,31 @@
+require('dotenv').config()
+
 const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.js");
-const db = require("../Models");
+const secret = process.env.JWT_SECRET;
+// const db = require("../Models");
 // const User = db.user;
 
-
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
-
-  if (!token) {
-    return res.status(403).send({ message: "No token provided!" });
+  let token = req.headers["authorization"];
+  
+  if (token && token.startsWith("Bearer ")) {
+      token = token.slice(7, token.length);
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
-            if (err) {
-                return res.status(401).send({
-                message: "Unauthorized!",
-                });
-            }
-                req.userId = decoded.id;
-                next();
-            });
+  if (!token) {
+    return res.status(403).send({ message: "Aucun token fourni!" });
+  }
+
+  jwt.verify(token, secret, (err, decoded) => {
+    if (err) {
+        return res.status(401).send({
+        message: "Accès refusé!",
+        error: err.message
+        });
+    }
+        req.userId = decoded.userId;
+        next();
+    });
 };
 
 // isAdmin = (req, res, next) => {
